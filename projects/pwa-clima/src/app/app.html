@@ -1,0 +1,124 @@
+<main class="weather-shell">
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Clima escolar, inicio">
+      <span class="brand-icon" aria-hidden="true">☀</span>
+      <span><strong>Clima escolar</strong><small>Tu día, mejor planeado</small></span>
+    </a>
+    <span class="topbar-note">Pronóstico del tiempo</span>
+  </header>
+
+  <section class="intro">
+    <p class="eyebrow">Consulta el pronóstico</p>
+    <h1>¿Qué clima<br /><em>hace hoy?</em></h1>
+    <p class="intro-copy">Busca una ciudad para consultar las condiciones actuales y el pronóstico de los próximos días.</p>
+
+    <form class="search-form" (ngSubmit)="searchWeather()">
+      <label for="city-search">Ciudad</label>
+      <div class="search-control">
+        <input id="city-search" name="city" [(ngModel)]="cityQuery" placeholder="Ej. Ciudad de México" autocomplete="off" />
+        <button type="submit" [disabled]="isLoading()">
+          {{ isLoading() ? 'Buscando…' : 'Buscar clima' }}
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </form>
+    <nav class="quick-cities" aria-label="Ciudades de acceso rápido">
+      <span>Ciudades rápidas</span>
+      @for (city of quickCities; track city.label) {
+        <button type="button" (click)="selectQuickCity(city.query)" [disabled]="isLoading()">{{ city.label }}</button>
+      }
+    </nav>
+  </section>
+
+  @if (errorMessage()) {
+    <p class="error-message" role="alert">{{ errorMessage() }}</p>
+  }
+
+  @if (isLoading() && !forecast()) {
+    <section class="loading-card" role="status">
+      <span class="loading-sun" aria-hidden="true">☀</span>
+      <p>Buscando la ciudad y consultando Open-Meteo…</p>
+    </section>
+  }
+
+  @if (forecast(); as data) {
+    <section class="current-card" aria-labelledby="current-title" [attr.aria-busy]="isLoading()">
+      <div class="current-details">
+        <p class="eyebrow">Condiciones actuales</p>
+        @if (selectedCity(); as city) {
+          <h2 id="current-title">{{ city.name }}<span>{{ city.admin1 ? city.admin1 + ', ' : '' }}{{ city.country }}</span></h2>
+        }
+        <p class="weather-description">{{ weatherDescription(data.current.weather_code) }}</p>
+        <p class="feels-like">Sensación térmica de {{ data.current.apparent_temperature | number:'1.0-0' }} °C</p>
+      </div>
+      <div class="temperature" aria-label="Temperatura actual">
+        <span class="current-icon" aria-hidden="true">{{ weatherIcon(data.current.weather_code) }}</span>
+        <strong>{{ data.current.temperature_2m | number:'1.0-0' }}<sup>°</sup></strong>
+      </div>
+      <div class="weather-facts">
+        <div><span>Humedad</span><strong>{{ data.current.relative_humidity_2m }}%</strong></div>
+        <div><span>Viento</span><strong>{{ data.current.wind_speed_10m | number:'1.0-0' }} km/h</strong></div>
+        <div><span>Precipitación</span><strong>{{ data.current.precipitation | number:'1.0-1' }} mm</strong></div>
+      </div>
+    </section>
+
+    <section class="forecast-section" aria-labelledby="forecast-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">Planea tu semana</p><h2 id="forecast-title">Próximos 5 días</h2></div>
+        @if (updatedAt(); as date) {
+          <span class="updated-at">Actualizado {{ date | date:'shortTime' }}</span>
+        }
+      </div>
+      <div class="forecast-grid">
+        @for (day of data.daily.time; track day; let i = $index) {
+          <article class="forecast-card">
+            <h3>{{ formatForecastDay(day) }}</h3>
+            <span class="forecast-icon" aria-hidden="true">{{ weatherIcon(data.daily.weather_code[i]) }}</span>
+            <p>{{ weatherDescription(data.daily.weather_code[i]) }}</p>
+            <div class="day-temperatures">
+              <strong>{{ data.daily.temperature_2m_max[i] | number:'1.0-0' }}°</strong>
+              <span>{{ data.daily.temperature_2m_min[i] | number:'1.0-0' }}°</span>
+            </div>
+            <span class="rain-chance">☂ {{ data.daily.precipitation_probability_max[i] }}% lluvia</span>
+          </article>
+        }
+      </div>
+    </section>
+  }
+
+  <section class="push-panel" aria-labelledby="push-title">
+    <div class="push-copy">
+      <p class="eyebrow">Avisos de la comunidad</p>
+      <h2 id="push-title">Notificaciones del clima</h2>
+      <p class="server-state" aria-live="polite">
+        <span class="server-dot" [class.online]="push.serverStatus() === 'online'" [class.offline]="push.serverStatus() === 'offline'"></span>
+        Servidor push:
+        @switch (push.serverStatus()) {
+          @case ('checking') { comprobando conexión… }
+          @case ('online') { conectado · {{ push.serverSubscriptions() }} suscripciones }
+          @case ('offline') { sin conexión }
+        }
+      </p>
+      @if (push.feedback()) {
+        <p class="push-feedback" role="status">{{ push.feedback() }}</p>
+      }
+    </div>
+    <div class="push-actions">
+      @if (!push.supported) {
+        <p class="push-unavailable">Abre la compilación de producción en localhost o en un sitio HTTPS para activar el Service Worker.</p>
+      } @else if (push.subscribed()) {
+        <span class="subscribed-label">✓ Este dispositivo está suscrito</span>
+      } @else {
+        <button class="push-button" type="button" (click)="push.subscribe()" [disabled]="push.busy()">
+          {{ push.busy() ? 'Registrando…' : 'Activar notificaciones' }}
+        </button>
+      }
+      <button class="push-button secondary" type="button" (click)="notifyForecast()" [disabled]="!push.subscribed() || !forecast() || push.busy()">
+        {{ push.busy() ? 'Enviando…' : 'Enviar aviso del pronóstico' }}
+      </button>
+      <button class="server-refresh" type="button" (click)="push.checkServer()">Comprobar servidor</button>
+    </div>
+  </section>
+
+  <footer>Datos del pronóstico: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a></footer>
+</main>

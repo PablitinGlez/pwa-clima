@@ -1,0 +1,100 @@
+:host {
+  --ink: #17364a;
+  --muted: #607b8b;
+  --blue: #2177a5;
+  display: block;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Segoe UI", Inter, system-ui, sans-serif;
+}
+
+.weather-shell { min-height: 100vh; padding: 0 max(22px, calc((100vw - 1080px) / 2)); background: radial-gradient(ellipse at 76% 18%, #fff4d4 0, #eff9fa 34%, #e7f1f5 100%); }
+.topbar { display: flex; min-height: 82px; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid #17364a18; }
+.brand { display: flex; align-items: center; gap: 11px; color: inherit; text-decoration: none; }
+.brand-icon { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 15px; background: #ffe7a8; color: #c07922; font-size: 24px; }
+.brand strong, .brand small { display: block; }
+.brand strong { font-size: 1rem; letter-spacing: -.02em; }
+.brand small { margin-top: 3px; color: var(--muted); font-size: .7rem; }
+.topbar-note { color: #648190; font-size: .78rem; }
+.intro { width: min(760px, 100%); padding: clamp(40px, 8vw, 78px) 0 32px; }
+.eyebrow { margin: 0 0 12px; color: var(--blue); font-size: .68rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
+h1 { margin: 0; font: 500 clamp(2.8rem, 7vw, 4.6rem)/.99 Georgia, "Times New Roman", serif; letter-spacing: -.06em; }
+h1 em { color: var(--blue); font-weight: 400; }
+.intro-copy { max-width: 540px; margin: 17px 0 0; color: var(--muted); font-size: .94rem; line-height: 1.65; }
+.search-form { width: min(600px, 100%); margin-top: 25px; }
+.search-form label { display: block; margin-bottom: 7px; color: #4e6d7e; font-size: .75rem; font-weight: 700; }
+.search-control { display: flex; gap: 9px; }
+.search-control input { min-width: 0; min-height: 48px; flex: 1; padding: 0 14px; border: 1px solid #c7dce4; border-radius: 10px; outline: none; background: #ffffffc7; color: var(--ink); font: inherit; }
+.search-control input:focus { border-color: #5c9bbb; box-shadow: 0 0 0 3px #2177a51a; }
+.search-control button { display: inline-flex; min-height: 48px; align-items: center; gap: 12px; padding: 0 17px; border: 0; border-radius: 10px; background: var(--blue); color: white; font: inherit; font-size: .8rem; font-weight: 750; cursor: pointer; }
+.search-control button:hover:not(:disabled) { background: #175c80; }
+.search-control button:disabled { opacity: .65; cursor: wait; }
+.quick-cities { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+.quick-cities > span { margin-right: 2px; color: #78909b; font-size: .7rem; font-weight: 700; }
+.quick-cities button { min-height: 32px; padding: 0 11px; border: 1px solid #c7dce4; border-radius: 999px; background: #ffffffa8; color: #426477; font: inherit; font-size: .7rem; font-weight: 700; cursor: pointer; transition: background .15s, border-color .15s; }
+.quick-cities button:hover:not(:disabled) { border-color: #8bb7c9; background: #fff; }
+.quick-cities button:disabled { opacity: .6; cursor: wait; }
+.error-message { margin: 0 0 18px; padding: 13px 15px; border: 1px solid #e6c2b9; border-radius: 10px; background: #fff3ef; color: #934c3f; font-size: .84rem; }
+.loading-card { display: flex; min-height: 190px; align-items: center; justify-content: center; gap: 13px; margin: 6px 0 30px; border: 1px solid #d4e4e8; border-radius: 18px; background: #ffffffa6; color: var(--muted); }
+.loading-card p { font-size: .9rem; }
+.loading-sun { color: #e9a83e; font-size: 2rem; animation: turn 2s linear infinite; }
+@keyframes turn { to { transform: rotate(360deg); } }
+.current-card { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 20px; padding: 28px 31px 21px; border: 1px solid #d2e1e4; border-radius: 18px; background: #ffffffb8; box-shadow: 0 12px 32px #315c7010; }
+.current-details h2 { margin: 0; font: 500 clamp(1.7rem, 4vw, 2.5rem) Georgia, serif; letter-spacing: -.035em; }
+.current-details h2 span { display: block; margin-top: 5px; color: #78909b; font: 500 .82rem "Segoe UI", sans-serif; letter-spacing: 0; }
+.weather-description { margin: 16px 0 3px; color: #355e72; font-size: 1rem; font-weight: 700; }
+.feels-like { margin: 0; color: var(--muted); font-size: .82rem; }
+.temperature { display: flex; align-items: center; gap: 7px; }
+.temperature strong { color: #1b4d68; font: 400 clamp(3.3rem, 8vw, 5.1rem)/1 Georgia, serif; letter-spacing: -.08em; }
+.temperature sup { font: 400 .46em Georgia, serif; vertical-align: top; }
+.current-icon { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+.weather-facts { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-top: 17px; border-top: 1px solid #dce7e8; }
+.weather-facts div { display: grid; gap: 5px; }
+.weather-facts span { color: #8297a0; font-size: .7rem; }
+.weather-facts strong { color: #385e70; font-size: .87rem; }
+.forecast-section { padding: 37px 0 48px; }
+.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
+.section-heading h2 { margin: 0; font: 500 1.55rem Georgia, serif; }
+.updated-at { color: #80959d; font-size: .72rem; }
+.forecast-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.forecast-card { display: flex; min-width: 0; min-height: 185px; flex-direction: column; align-items: center; padding: 15px 9px; border: 1px solid #d7e5e7; border-radius: 13px; background: #ffffffa8; text-align: center; }
+.forecast-card h3 { margin: 0; color: #466779; font-size: .75rem; font-weight: 750; text-transform: capitalize; }
+.forecast-icon { margin: 12px 0 4px; font-size: 1.6rem; }
+.forecast-card p { min-height: 30px; margin: 0; color: #758e99; font-size: .66rem; }
+.day-temperatures { display: flex; gap: 9px; margin-top: 6px; font-size: .85rem; }
+.day-temperatures span { color: #91a3aa; }
+.rain-chance { margin-top: auto; padding-top: 10px; color: #62859a; font-size: .65rem; }
+.push-panel { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 22px; margin: 0 0 25px; padding: 22px 24px; border: 1px solid #c7dce4; border-radius: 16px; background: #f8fcfbbd; }
+.push-copy h2 { margin: 0; color: var(--ink); font: 500 1.4rem Georgia, serif; }
+.push-copy .eyebrow { margin-bottom: 6px; }
+.server-state { display: flex; align-items: center; gap: 7px; margin: 10px 0 0; color: #6d8794; font-size: .75rem; }
+.server-dot { width: 8px; height: 8px; border-radius: 50%; background: #c69a43; }
+.server-dot.online { background: #52a36f; box-shadow: 0 0 0 3px #52a36f25; }
+.server-dot.offline { background: #bd5e4f; box-shadow: 0 0 0 3px #bd5e4f25; }
+.push-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 8px; }
+.push-button { min-height: 39px; padding: 0 13px; border: 1px solid transparent; border-radius: 9px; background: var(--blue); color: white; font: inherit; font-size: .75rem; font-weight: 750; cursor: pointer; }
+.push-button:hover:not(:disabled) { background: #175c80; }
+.push-button:disabled { opacity: .55; cursor: not-allowed; }
+.push-button.secondary { border-color: #c7dce4; background: #fff; color: #426477; }
+.push-button.secondary:hover:not(:disabled) { background: #eef6f8; }
+.server-refresh { padding: 6px 8px; border: 0; border-radius: 6px; background: transparent; color: #426f88; font: inherit; font-size: .72rem; font-weight: 700; cursor: pointer; }
+.server-refresh:hover { background: #e4eff1; }
+.subscribed-label { color: #397a55; font-size: .75rem; font-weight: 750; }
+.push-unavailable { max-width: 270px; margin: 0; color: #8d674c; font-size: .74rem; line-height: 1.5; }
+.push-feedback { margin: 10px 0 0; color: #426f55; font-size: .78rem; line-height: 1.5; }
+footer { padding: 15px 0 22px; border-top: 1px solid #17364a18; color: #748b96; font-size: .72rem; }
+footer a { color: #426f88; }
+
+@media (max-width: 700px) {
+  .forecast-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .weather-shell { padding-inline: 16px; }
+  .current-card { padding: 21px 18px 17px; }
+  .forecast-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .search-control { flex-direction: column; }
+  .search-control button { justify-content: center; }
+  .section-heading { align-items: flex-start; flex-direction: column; }
+  .push-panel { grid-template-columns: 1fr; padding: 19px 17px; }
+  .push-actions { justify-content: flex-start; }
+}
